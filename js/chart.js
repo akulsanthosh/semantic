@@ -18,17 +18,20 @@ function create_chart_from_data(sensor_id,chart_id,chart_label,context={}){
         var data_labels = [];
         var data_values = []
         for(var date in historical_data){
-            data_labels.push(date);
+            data_labels.push(date.slice(0,-10));
             data_values.push(historical_data[date])
          }
         create_chart(chart_id,data_labels,data_values,chart_label,context)
     })
 }
 
-function  create_chart(chart_id,data_labels,data_values,label,context){
+function  create_chart(chart_id,data_labels,data_values,label,context,color){
     console.log(context)
+    console.log(color)
     var keys=  Object.keys(context);
-
+    if(context[0] === ""){
+        context[0] = "line";
+    }
     var ctx = document.getElementById(chart_id);
     var myChart = new Chart(ctx, {
         type: "line",
@@ -39,6 +42,8 @@ function  create_chart(chart_id,data_labels,data_values,label,context){
                 data: data_values,
 
                 "borderColor":"rgb(75, 192, 192)",
+                
+                backgroundColor: context[1]
             }]
         },
         options: {
@@ -50,9 +55,29 @@ function  create_chart(chart_id,data_labels,data_values,label,context){
                 }]
             }
         },
-        ...context
+        
+        type: context[0]
+        
     });
 }
 
-create_chart_from_data("temp_001","temp_chart","temperature today")
-create_chart_from_data("hum_001","hum_chart","humidity today")
+
+var ref = db.collection("semantic").doc("display");
+
+var ctr = 0;
+ref.onSnapshot((snapshot) => {
+    display_data = snapshot.data()
+    var context = []
+    context.push(display_data.chart)
+    context.push(display_data.color)
+    sensor_to_use = display_data.type.split(",")
+    if(ctr > 0 && display_data.mode === "graph"){
+        $(".blocks").hide();
+        for(var i =0 ; i<sensor_to_use.length;i++){
+                $("#"+sensor_to_use[i]+"_chart").parent().show()
+                create_chart_from_data(sensor_to_use[i]+"_001",sensor_to_use[i]+"_chart",sensor_to_use[i]+" today",context)
+        }
+    }
+    ctr += 1;
+});
+
