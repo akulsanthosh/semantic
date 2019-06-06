@@ -8,29 +8,29 @@
 //   };
 //   firebase.initializeApp(config);
 
-  
+
 // var db = firebase.firestore();
 
 
-function create_chart_from_data(sensor_id,chart_id,chart_label,context={}){
+function create_chart_from_data(sensor_id, chart_id, chart_label, context = {}) {
     db.collection("semantic").doc("sensor").collection(sensor_id).doc("historical").onSnapshot((querySnapshot) => {
         console.log(querySnapshot.data())
         var historical_data = querySnapshot.data();
         var data_labels = [];
         var data_values = []
-        for(var date in historical_data){
-            data_labels.push(date.slice(0,-10));
+        for (var date in historical_data) {
+            data_labels.push(date.slice(0, -10));
             data_values.push(historical_data[date])
-         }
-        create_chart(chart_id,data_labels,data_values,chart_label,context)
+        }
+        create_chart(chart_id, data_labels, data_values, chart_label, context)
     })
 }
 
-function  create_chart(chart_id,data_labels,data_values,label,context,color){
-    console.log(chart_id,data_labels,data_values,label,context)
+function create_chart(chart_id, data_labels, data_values, label, context, color) {
+    console.log(chart_id, data_labels, data_values, label, context)
     console.log(data_values)
-    var keys=  Object.keys(context);
-    if(context[0] === ""){
+    var keys = Object.keys(context);
+    if (context[0] === "") {
         context[0] = "line";
     }
     var ctx = document.getElementById(chart_id);
@@ -42,8 +42,8 @@ function  create_chart(chart_id,data_labels,data_values,label,context,color){
                 label: label,
                 data: data_values,
 
-                "borderColor":"rgb(75, 192, 192)",
-                
+                "borderColor": "rgb(75, 192, 192)",
+
                 backgroundColor: context[1]
             }]
         },
@@ -56,9 +56,9 @@ function  create_chart(chart_id,data_labels,data_values,label,context,color){
                 }]
             }
         },
-        
+
         type: context[0]
-        
+
     });
 }
 
@@ -81,4 +81,3 @@ function  create_chart(chart_id,data_labels,data_values,label,context,color){
 //     }
 //     ctr += 1;
 // });
-
