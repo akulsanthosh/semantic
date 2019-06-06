@@ -14,7 +14,7 @@ var db = firebase.firestore();
 
 
 
-function createDiv(snapshot, no) {
+function createDiv(snapshot, no,) {
 
     //Data Creation
     display_data = snapshot.data()
@@ -44,10 +44,13 @@ function createDiv(snapshot, no) {
     var div_card_right = document.createElement("div");
     div_card_right.classList.add("card-text");
 
-    var canvas = document.createElement("canvas");
-    canvas.setAttribute("id", "div" + no);
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
+    // var canvas = document.createElement("canvas");
+    // canvas.setAttribute("id", "div" + no);
+    // canvas.style.width = "100%";
+    // canvas.style.height = "100%";
+
+    var canvas = document.createElement("div");
+    canvas.innerHTML = output.data().output;
 
     div_card_right.appendChild(canvas);
     div_right.appendChild(div_card_right);
@@ -79,7 +82,12 @@ ref.onSnapshot((snapshot) => {
         // }else{
         //     document.getElementById("hum").appendChild(createDiv(snapshot,ctr));
         // }
-        document.getElementById("all").appendChild(createDiv(snapshot, ctr));
+        /* document.getElementById("all").appendChild(createDiv(snapshot, ctr)); */
+
+        if(snapshot.data().type === 'cli'){
+            file.style.display='block';
+
+        }
     }
     ctr += 1;
 })
@@ -122,6 +130,7 @@ actuator_pointer.onSnapshot((snapshot) => {
 
 let file_pointer = db.collection("semantic").doc("script");
 var file = document.getElementById("image-file");
+file.style.display='none';
 file.onchange = function() {
     var storageRef = firebase.storage().ref("script/" + file.files[0].name);
     file_pointer.set({
