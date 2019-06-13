@@ -47,6 +47,9 @@ function reversesmoothscroll() {
     $(".gooey").addClass("gooeywhite");
 
 }
-
-smoothscroll()
+$("#headingText").on("click",function(){
+    moveheading()
+    setTimeout(smoothscroll,1500)
+    
+})
 

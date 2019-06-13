@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 var db = firebase.firestore();
 lst = [];
 
-
+pwd = ""
 function data_capture() {
   var ref = db.collection("semantic labs");
   event_listener = ref.onSnapshot((snapshot) => {
@@ -22,17 +22,18 @@ function data_capture() {
       location_data_each = snap.data();
       console.log(location_data_each)
       subtitle = {}
-      for (var edge in location_data_each["Connected Edges"]) {
-        subtitle_each = location_data_each["Connected Edges"][edge].Name
+      for (var edge in location_data_each["Connected_Edges"]) {
+        subtitle_each = location_data_each["Connected_Edges"][edge].Name
+        pwd = location_data_each["Connected_Edges"]['1']["settings"].pwd
         list_of_card = []
-        for (var device in location_data_each["Connected Edges"][edge]["Connected Devices"]) {
-          heading = location_data_each["Connected Edges"][edge]["Connected Devices"][device].Name
-          body = location_data_each["Connected Edges"][edge]["Connected Devices"][device].data.current
-
+        for (var device in location_data_each["Connected_Edges"][edge]["Connected_Devices"]) {
+          heading = location_data_each["Connected_Edges"][edge]["Connected_Devices"][device].Name
+          body = location_data_each["Connected_Edges"][edge]["Connected_Devices"][device].data.current
+          
           let each_card_dict = {
             heading: heading,
             body: body,
-            "class": "card-expand",
+            "class": "",
 
           }
           list_of_card.push(each_card_dict)
@@ -50,11 +51,33 @@ function data_capture() {
   })
 }
 data_capture()
+output = ""
+file = []
+function get_cmd_from_firebase(id,device_id,output_location,file_location){
+  var ref = db.collection("semantic labs").doc(id);
+  ref.onSnapshot((snapshot)=>{
+    console.log()
+    var settings_path = snapshot.data()["Connected_Edges"][device_id]["settings"]
+    var temp_output = settings_path["output"]
+    var file_output = settings_path["file_upload"]
+    pwd = settings_path.pwd
+    if (temp_output!=output){
+      var height = $("#"+output_location).parent().height()
+      $("#"+output_location).text(temp_output)
+      console.log($("#"+output_location).height(height-100))
+    }
+    output = temp_output
+    console.log(file_output)
+    var height = $("#"+file_location).parent().height()
+    $("#"+file_location).html(list_to_html(file_output))
+    console.log($("#"+file_location).height(height-100))
 
+  })
+}
 function put_cmd_to_firebase(id, device_id, cmd) {
   var ref = db.collection("semantic labs").doc(id);
 
-  var settings_path = "Connected Edges." + device_id + ".settings"
+  var settings_path = "Connected_Edges." + device_id + ".settings"
   var current_path = settings_path + ".current"
   var change_path = settings_path + ".change"
   update_dict = {
@@ -65,9 +88,9 @@ function put_cmd_to_firebase(id, device_id, cmd) {
 }
 
 
-// var a = Connected Edges:
+// var a = Connected_Edges:
 // 1:
-// Connected Devices:
+// Connected_Devices:
 // 1:
 // Model: "DHT11"
 // Name: "Temperature"

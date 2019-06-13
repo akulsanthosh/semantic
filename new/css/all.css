@@ -305,8 +305,28 @@ section{
 }
 .cli_output{
     padding-left: 0;
+    
 }
 
 .btn-rounded-custom{
     border-radius: 24px;
+}
+
+.last_line_cmd{
+    border: none;
+}
+
+.last_line_cmd:focus{
+    border: none;
+        outline:none;
+}
+
+.card_body_custom{
+    white-space: pre-wrap;
+    overflow-y: scroll;
+
+}
+
+.right-move{
+    right:10px
 }

@@ -79,50 +79,25 @@ function create_container(list_of_locations) {
 
 }
 
-create_container([
-    {
-        "title": "Semantic Lab (Kochi)",
-        "subtitles": {
-            "Rasberry Pi 3 (1)": [
-                {
-                    "heading": "<h1 class='title_text'>Temp Sensor</h1>",
-                    "body": "<h1>23°</h1><br><br><br><br><br><br><br>",
-                    "footer": "",
-                    "class": "card-expand",
-                    "more_info": "Hello There"
-                },
-                {
-                    "heading": "<h1 class='title_text'> Hum Sensor</h1>",
-                    "body": "<h1>77%</h1>",
-                    "footer": ""
-                }
-            ],
-            "Rasberry Pi 3 (2)": [
-            ]
-        }
-    },
-    {
-        "title": "Semantic Lab (Banglore)",
-        "subtitles": {
-        }
-    }])
 
 function create_cli_card() {
     more_info =
-        `<div class = "row h-50">
+        `<div class = "row h-50 row_custom">
         <div class= "col cli_output">
-             <div class="card-header">output</div>
+             <div class="card-header">Output</div>
+             <div class="card-body card_body_custom" id="output_body"></div>
         </div>
     </div>
-    <div class= "row h-50">
+    <div class= "row h-50 row_custom">
         <div class = "col cli_file">
-        <div class="card-header">file</div>
+        <div class="card-header row"><span class="mr-auto">File</span> <button class="btn btn-sm btn-outline-danger btn-rounded-custom right-move" onclick="">File Upload</button></div>
+        <div class="card-body card_body_custom" id="file_body"></div>
         </div>
     </div>`
 
     body =`<div id="terminal_text">
-        <div class="cmd_text"><span class= "cmd_line">pwd $> </span>cmd1</div>
-        <div class="cmd_text"><span class= "cmd_line">pwd $> </span><input class = "last_line_cmd" id="last_line"></div>
+        <div class="cmd_text"><span class= "cmd_line">`+pwd+` $> </span>cmd1</div>
+        <div class="cmd_text " id = "last_line_full"><span class= "cmd_line">`+pwd+` $> </span><input class = "last_line_cmd" id="last_line"></div>
     </div>`
     let cli_info = {
         "heading": "Terminal",
@@ -134,21 +109,23 @@ function create_cli_card() {
     };
     return create_card(cli_info)
 }
+function move_cli_pointer(){
+    var command = $("#last_line").val()
+    $("#last_line").val("")
+    var last_line_full = $("#last_line_full").clone() [0]
+    $("#last_line_full").remove()
+    $("#terminal_text")[0].innerHTML+=`<div class="cmd_text"><span class= "cmd_line">`+pwd+` $> </span>`+command+`</div>`
+    $("#terminal_text")[0].appendChild(last_line_full)
+    let last_line = $("#last_line") 
+    last_line.on("keyup",send_data)
+}
 
 function put_cli_card() {
     $('#main_container').fadeOut(1000, function () {
-
+        event_listener()
         $('#main_container').html(create_cli_card())
         let last_line = $("#last_line") 
-        last_line.on("keyup",function(event){
-            if(event.key==="Enter"){
-                console.log(last_line.val())
-                put_cmd_to_firebase('1','1',last_line.val())
-                last_line.val("")
-                event_listener()
-
-            }
-        })
+        last_line.on("keyup",send_data)
     })
     let main_title = $("#main_title")
     main_title.fadeOut(200, function () {
@@ -160,3 +137,23 @@ function put_cli_card() {
     
 }
 
+function list_to_html(list) {
+    var total_html = ``
+    for(var i=0;i<list.length;i++){
+        var a = list[i]
+        total_html+=`<li>`+a+`</li>`
+    }
+    return `<ol>`+total_html+`</ol>`
+}
+
+function send_data(event){
+    if(event.key==="Enter"){
+        let last_line = $("#last_line") 
+        console.log(last_line.val())
+        put_cmd_to_firebase('1','1',last_line.val())
+        move_cli_pointer()
+        last_line.val("")
+        get_cmd_from_firebase('1','1',"output_body","file_body")
+        
+    }
+}
