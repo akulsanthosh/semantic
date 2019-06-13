@@ -276,7 +276,7 @@ section{
     left:5vw;
     overflow-y: scroll;
     overflow-x:hidden; 
-    height: 60vh;
+    height: 73vh;
     /* left: 50%; */
     /* transform:translateX(-50%); */
 
@@ -285,4 +285,24 @@ section{
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.card-full{
+    width:90%;
+    left:50%;
+    transform: translateX(-50%);
+    height:68vh
+}
+.col_terminal{
+    padding-right: 0;
+    border-right:1px solid rgba(0,0,0,.125)
+}
+
+.cli_file{
+    padding-left: 0;
+    border-top:1px solid rgba(0,0,0,.125)
+
+}
+.cli_output{
+    padding-left: 0;
 }

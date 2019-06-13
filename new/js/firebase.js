@@ -12,10 +12,12 @@ firebase.initializeApp(config);
 var db = firebase.firestore();
 lst = [];
 
-location_data = [];
+
 function data_capture() {
+
   var ref = db.collection("semantic labs");
   ref.onSnapshot((snapshot) => {
+    let location_data = [];
     snapshot.forEach((snap) => {
       location_dict = {}
       location_data_each = snap.data();
@@ -47,24 +49,3 @@ function data_capture() {
 }
 data_capture()
 
-var i = {
-  "title": "Semantic Lab (Kochi)",
-  "subtitles": {
-      "Rasberry Pi 3 (1)": [
-          {
-              "heading": "<h1 class='title_text'>Temp Sensor</h1>",
-              "body":"<h1>23°</h1>",
-              "footer": "",
-              "class": "card-expand",
-              "more_info":"Hello There"
-          },
-          {
-              "heading": "<h1 class='title_text'> Hum Sensor</h1>",
-              "body": "<h1>77%</h1>",
-              "footer": ""
-          }
-      ],
-      "Rasberry Pi 3 (2)": [
-      ]
-  }
-}

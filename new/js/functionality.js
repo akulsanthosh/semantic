@@ -6,10 +6,11 @@ function create_card(card_information) {
     footer = card_information.footer
     card_class = card_information.class
     card_side_info = card_information.more_info
+    first_col_class = card_information.column_class
     side_col = ""
-    footer_html=""
+    footer_html = ""
     if (footer) {
-        footer_html = `<div class="card-footer">`+ footer + `</div>`
+        footer_html = `<div class="card-footer">` + footer + `</div>`
     }
     if (card_side_info) {
         side_col = `<div class="col">
@@ -17,15 +18,15 @@ function create_card(card_information) {
                     </div>`
 
     }
-    let card = `<div class="col">
+    let card = `<div class="col" onclick="put_cli_card()">
                     <div class="card card-1 `+ card_class + `">
-                        <div class = "row">
-                            <div class = "col">
+                        <div class = "row h-100">
+                            <div class = "col `+ first_col_class + `">
                                 <div class="card-header">`+ heading + `</div>
                                 <div class="card-body">`+ body + `</div> 
-                                `+footer_html+`
+                                `+ footer_html + `
                             </div>
-                            `+side_col+`
+                            `+ side_col + `
                         </div>
                      </div>
                 </div>
@@ -85,10 +86,10 @@ create_container([
             "Rasberry Pi 3 (1)": [
                 {
                     "heading": "<h1 class='title_text'>Temp Sensor</h1>",
-                    "body":"<h1>23°</h1>",
+                    "body": "<h1>23°</h1><br><br><br><br><br><br><br>",
                     "footer": "",
                     "class": "card-expand",
-                    "more_info":"Hello There"
+                    "more_info": "Hello There"
                 },
                 {
                     "heading": "<h1 class='title_text'> Hum Sensor</h1>",
@@ -105,3 +106,44 @@ create_container([
         "subtitles": {
         }
     }])
+
+function create_cli_card() {
+    more_info =
+        `<div class = "row h-50">
+        <div class= "col cli_output">
+             <div class="card-header">output</div>
+        </div>
+    </div>
+    <div class= "row h-50">
+        <div class = "col cli_file">
+        <div class="card-header">file</div>
+        </div>
+    </div>`
+
+    body =`<div id="terminal_text">
+        <div class="cmd_text"><span class= "cmd_line">pwd $> </span>cmd1</div>
+        <div class="cmd_text"><span class= "cmd_line">pwd $> </span><input class = "last_line_cmd"></div>
+    </div>`
+    let cli_info = {
+        "heading": "Terminal",
+        "body": body,
+        "footer": "",
+        "class": "card-full",
+        "more_info": more_info,
+        "column_class": "col_terminal"
+    };
+    return create_card(cli_info)
+}
+
+function put_cli_card() {
+    $('#main_container').fadeOut(1000, function () {
+
+        $('#main_container').html(create_cli_card())
+    })
+    let main_title = $("#main_title")
+    main_title.fadeOut(200, function () {
+        main_title.text("Command Line Interface")
+        main_title.fadeIn(600)
+    })
+    $('#main_container').fadeIn(200)
+}
