@@ -18,7 +18,7 @@ function create_card(card_information) {
                     </div>`
 
     }
-    let card = `<div class="col" onclick="put_cli_card()">
+    let card = `<div class="col">
                     <div class="card card-1 `+ card_class + `">
                         <div class = "row h-100">
                             <div class = "col `+ first_col_class + `">
@@ -122,7 +122,7 @@ function create_cli_card() {
 
     body =`<div id="terminal_text">
         <div class="cmd_text"><span class= "cmd_line">pwd $> </span>cmd1</div>
-        <div class="cmd_text"><span class= "cmd_line">pwd $> </span><input class = "last_line_cmd"></div>
+        <div class="cmd_text"><span class= "cmd_line">pwd $> </span><input class = "last_line_cmd" id="last_line"></div>
     </div>`
     let cli_info = {
         "heading": "Terminal",
@@ -139,11 +139,24 @@ function put_cli_card() {
     $('#main_container').fadeOut(1000, function () {
 
         $('#main_container').html(create_cli_card())
+        let last_line = $("#last_line") 
+        last_line.on("keyup",function(event){
+            if(event.key==="Enter"){
+                console.log(last_line.val())
+                put_cmd_to_firebase('1','1',last_line.val())
+                last_line.val("")
+                event_listener()
+
+            }
+        })
     })
     let main_title = $("#main_title")
     main_title.fadeOut(200, function () {
         main_title.text("Command Line Interface")
         main_title.fadeIn(600)
+
     })
     $('#main_container').fadeIn(200)
+    
 }
+

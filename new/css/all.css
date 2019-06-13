@@ -306,3 +306,7 @@ section{
 .cli_output{
     padding-left: 0;
 }
+
+.btn-rounded-custom{
+    border-radius: 24px;
+}
