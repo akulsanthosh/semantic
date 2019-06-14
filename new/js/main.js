@@ -1,5 +1,7 @@
 let wrap = $("#headingText");
 
+smoothscroll_done = false
+moveheading_done = false
 
 function debounce(func, wait, immediate) {
     var timeout;
@@ -17,7 +19,7 @@ function debounce(func, wait, immediate) {
 }
 
 function moveheading() {
-
+    moveheading_done = true
     wrap.addClass("headerAfter");
 
 }
@@ -25,12 +27,13 @@ function moveheading() {
 function reversemoveheading() {
 
     wrap.removeClass("headerAfter");
+moveheading_done = false
 
 }
 
 
 function smoothscroll() {
-
+    smoothscroll_done = true
     $(".welcome_page").addClass("blur-me");
     $(".gooey").removeClass("gooeywhite");
     $(".welcome_page").animate({ top: "-100vh" }, 500)
@@ -40,7 +43,7 @@ function smoothscroll() {
 
 function reversesmoothscroll() {
 
-
+    smoothscroll_done = false
     $(".welcome_page").removeClass("blur-me");
     $(".overview").animate({ top: "100vh" }, 500)
     $(".welcome_page").animate({ top: "0vh" }, 500)
