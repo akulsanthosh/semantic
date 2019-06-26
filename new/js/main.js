@@ -27,7 +27,7 @@ function moveheading() {
 function reversemoveheading() {
 
     wrap.removeClass("headerAfter");
-moveheading_done = false
+    moveheading_done = false
 
 }
 

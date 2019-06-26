@@ -19,36 +19,3 @@ function click_file_control() {
 
 }
 
-var ref = db.collection("semantic").doc("display");
-ctr = 0;
-ref.onSnapshot((snapshot) => {
-    if (ctr > 0) {
-        // if(snapshot.data().type === "temp"){
-        //     document.getElementById("temp").appendChild(createDiv(snapshot,ctr));
-        // }else{
-        //     document.getElementById("hum").appendChild(createDiv(snapshot,ctr));
-        // }
-        /* document.getElementById("all").appendChild(createDiv(snapshot, ctr)); */
-        
-        if(snapshot.data().mode === 'cli'){
-            if(!smoothscroll_done){
-                smoothscroll()
-            }
-            if(!create_cli_card_done){
-                put_cli_card()
-            }
-        }
-        if(snapshot.data().mode === 'file'){
-            if(!smoothscroll_done){
-                smoothscroll()
-            }
-
-            if(!create_cli_card_done){
-                put_cli_card()
-            }
-            setTimeout(click_file_control,3000)
-        }
-    }
-    ctr += 1;
-})
-

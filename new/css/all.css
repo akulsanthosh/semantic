@@ -92,12 +92,14 @@ section{
     border-radius: 50%;
     transform: translateX(0);
     animation: dot 2.8s infinite;
+    -webkit-animation: dot 2.8s infinite;
 }
 .gooey .dots {
     transform: translateX(0);
     margin-top: 12px;
     margin-left: 31px;
     animation: dots 2.8s infinite;
+    -webkit-animation: dots 2.8s infinite;
 }
 .gooey .dots span {
     display: block;
@@ -329,4 +331,94 @@ section{
 
 .right-move{
     right:10px
+}
+
+.vrcenter{
+    position: absolute;
+    font-size: 8rem;
+    top:33vh;
+    left:50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+}
+.img_custom{
+
+    position: absolute;
+    font-size: 8rem;
+    left:50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+}
+
+.graph_custom {
+    position: absolute;
+    height: 100%;
+    width:90%;
+    top:15vh;
+}
+.large-text{
+    font-size: 10rem;
+}
+.mrcenter{
+    position: absolute;
+    font-size: 4rem;
+    top:10vh;
+    left:50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+}
+
+.ytvideo{
+    height: 100%;
+    width:90%;
+    top:15vh;
+}
+
+#handle2 .rs-handle  {
+    background-color: transparent;
+    border: 8px solid transparent;
+    border-right-color: black;
+    margin: -8px 0 0 14px !important;
+}
+#handle2 .rs-handle:before  {
+    display: block;
+    content: " ";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background: black;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 100%;
+}
+#handle2 .rs-handle:after  {
+    display: block;
+    content: " ";
+    width: 106px;
+    position: absolute;
+    top: -1px;
+    right: 0px;
+    border-top: 2px dotted black;
+}
+#handle2 .rs-range-color  {
+    background-color: #000;
+}
+#handle2 .rs-path-color  {
+    background-color: #838383;
+}
+
+.card-servo{
+    width:32% !important;
+    left:50%;
+    transform: translateX(-50%);
+    height:68vh
 }

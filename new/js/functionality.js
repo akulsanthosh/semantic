@@ -114,6 +114,92 @@ function create_cli_card() {
     return create_card(cli_info)
 }
 
+function create_graph_card(sensor,current_val,unit,file) {
+    
+    let more_info ="<div class='graph_custom'><canvas id='canvas'></canvas></div>"
+    body = `<img class = "w-50 img_custom" src = '`+file+`'><h1 class='text-center align-self-center vrcenter'>`+current_val+unit+`</h1>`
+    heading = `<h1>`+sensor+`</h1>`
+    let graph_info = {
+        "heading": heading,
+        "body": body,
+        "footer": "",
+        "more_info":more_info,
+        "class": "card-full w-75 d-flex",
+        "column_class": "col-sm-4 'text-center"
+    };
+    return create_card(graph_info)
+}
+
+function create_video_card(url) {
+    
+    let more_info =""
+    body = `<iframe width="800" height="400" src=`+url+` frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+    heading = `<h1>Video</h1>`
+    let video_info = {
+        "heading": heading,
+        "body": body,
+        "footer": "",
+        "more_info":more_info,
+        "class": "card-full w-50 h-50 d-flex",
+        "column_class": "col-sm-4 'text-center"
+    };
+    return create_card(video_info)
+}
+
+function put_video_card(url) {
+    create_video_card_done = true
+    $('#main_container').fadeOut(1000, function() {
+        event_listener()
+        $('#main_container').html(create_video_card(url))
+        let last_line = $("#last_line")
+        last_line.on("keyup", send_data)
+    })
+    let main_title = $("#main_title")
+    main_title.fadeOut(200, function() {
+        main_title.text("Details")
+        main_title.fadeIn(600)
+
+    })
+    $('#main_container').fadeIn(200)
+
+}
+
+function create_servo_card(direction) {
+    
+    let more_info =""
+    body = `<div class='w-50 h-50 d-flex'><div id="handle2"></div></div>`
+    heading = `<h1>Servo Interface</h1>`
+    let servo_info = {
+        "heading": heading,
+        "body": body,
+        "footer": "",
+        "more_info":more_info,
+        "class": "card-servo w-50 h-50 d-flex",
+        "column_class": ""
+    };
+    return create_card(servo_info)
+}
+
+function put_servo_interface(direction) {
+    create_video_card_done = true
+    $('#main_container').fadeOut(1000, function() {
+        event_listener()
+        $('#main_container').html(create_servo_card(direction))
+        let last_line = $("#last_line")
+        last_line.on("keyup", send_data)
+    })
+
+    let main_title = $("#main_title")
+    main_title.fadeOut(200, function() {
+        main_title.text("Details")
+        main_title.fadeIn(600)
+
+    })
+    $('#main_container').fadeIn(200)
+
+}
+
+
 function move_cli_pointer() {
     var command = $("#last_line").val()
     $("#last_line").val("")
@@ -143,6 +229,24 @@ function put_cli_card() {
 
 }
 
+function put_graph_card(sensor,lst1,lst2,current_val,unit,file,context) {
+    create_graph_card_done = true
+    $('#main_container').fadeOut(1000, function() {
+        event_listener()
+        $('#main_container').html(create_graph_card(sensor,current_val,unit,file))
+        create_chart("canvas",lst1,lst2,sensor,context)
+    })
+
+    let main_title = $("#main_title")
+    main_title.fadeOut(200, function() {
+        main_title.text("Details")
+        main_title.fadeIn(600)
+
+    })
+    $('#main_container').fadeIn(200)
+
+}
+
 function list_to_html(list) {
     var total_html = ``
     for (var i = 0; i < list.length; i++) {
@@ -162,4 +266,82 @@ function send_data(event) {
         get_cmd_from_firebase('1', '1', "output_body", "file_body")
 
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function  create_chart(chart_id,data_labels,data_values,label,context){
+    console.log(chart_id,data_labels,data_values,label,context)
+    console.log(data_values)
+    var keys=  Object.keys(context);
+    if(context[0] === ""){
+        context[0] = "line";
+    }
+    var ctx = document.getElementById(chart_id);
+    var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: data_labels,
+            datasets: [{
+                label: label,
+                data: data_values,
+
+                "borderColor":"rgb(75, 192, 192)",
+                
+                backgroundColor: context[1]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false
+                    }
+                }]
+            }
+        },
+        
+        type: context[0]
+        
+    });
 }
